@@ -50,9 +50,9 @@ def options_menu():
 def main_menu():
     pygame.init()
     pygame.font.init()
-    pygame.mixer.init()
-    pygame.mixer.music.load('music/musica_fundo_menu.mp3')
-    pygame.mixer.music.play(-1)
+    # pygame.mixer.init()
+    # pygame.mixer.music.load('music/musica_fundo_menu.mp3')
+    # pygame.mixer.music.play(-1)
 
     width, height = 1600, 900
     screen = pygame.display.set_mode((width, height))

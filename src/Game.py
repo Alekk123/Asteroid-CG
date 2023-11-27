@@ -14,7 +14,7 @@ def game_loop():
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption('CS2D')
 
-    player = Player((width // 2, height // 2))
+    player = Player((width // 2, height // 2), width, height)
     bullets = []
 
     game_map = GameMap('assets/images/mapa.png', (width, height))
@@ -26,6 +26,8 @@ def game_loop():
                 return
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
+                    bullet_sound = pygame.mixer.Sound('music/sounds_gunshot.wav')
+                    bullet_sound.play()
                     angle = math.degrees(
                         math.atan2(pygame.mouse.get_pos()[1] - player.pos.y, pygame.mouse.get_pos()[0] - player.pos.x))
                     bullet = Bullet(player.pos, angle)
