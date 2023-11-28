@@ -1,45 +1,75 @@
 import pygame
 
 class HUD:
-    def __init__(self):
-        # Carregar os ícones para o HUD e redimensioná-los
-        icon_scale = 1.3  # Aumentar em 30%
-        icon_size = (int(32 * icon_scale), int(32 * icon_scale))  # Tamanho com aumento
-        self.heart_icon = pygame.transform.scale(pygame.image.load('assets/images/health_icon.png'), icon_size)
-        self.shield_icon = pygame.transform.scale(pygame.image.load('assets/images/shield_icon.png'), icon_size)
+    def __init__(self, screen_width, screen_height):
+        # Define um fator de escala para aumentar os ícones
+        icon_scale = 3  # Aumentar para quatro vezes o tamanho original
 
-        # Carregar uma fonte bonita
-        self.font = pygame.font.Font('assets/fonts/cs_regular.ttf', 36)
+        # Carrega e escala o ícone de saúde de acordo com o fator de escala
+        self.heart_icon = pygame.transform.scale(
+            pygame.image.load('assets/images/health_icon.png'),
+            (int(32 * icon_scale), int(32 * icon_scale))
+        )
 
-    def draw(self, screen, health, shield, ammo, money):
-        # Definir cores
-        red = (255, 0, 0)
+        # Carrega e escala o ícone de munição de acordo com o fator de escala
+        self.ammo_icon = pygame.transform.scale(
+            pygame.image.load('assets/images/ammo.png'),
+            (int(36 * icon_scale), int(36 * icon_scale))
+        )
+
+        # Aumenta o tamanho da fonte proporcionalmente ao aumento dos ícones
+        self.font_size = int(36 * icon_scale)  # Tamanho da fonte baseado no fator de escala
+        self.font = pygame.font.Font('assets/fonts/cs_regular.ttf', self.font_size)
+
+        # Guarda as dimensões da tela para uso no método draw
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+
+    def draw(self, screen, health, ammo):
+        # Define cores para o texto
         yellow = (255, 255, 0)
 
-        # Posições das barras
-        health_bar_width = 100 * (health / 100)  # Assumindo que a saúde máxima é 100
+        # Define a posição do ícone de saúde
+        icon_pos_health = (20, self.screen_height - self.heart_icon.get_height() - 20)
 
-        # Posições dos ícones
-        icon_pos_health = (20, screen.get_height() - 20 - self.heart_icon.get_height())
-
-        # Posições das barras atrás dos ícones
-        health_bar_rect = pygame.Rect(icon_pos_health[0] + self.heart_icon.get_width() + 10,
-                                      icon_pos_health[1] + self.heart_icon.get_height() // 2 - 7, health_bar_width, 15)
-
-        # Desenhar barra de saúde
-        pygame.draw.rect(screen, red, health_bar_rect)
-
-        # Desenhar ícone de vida
+        # Desenha o ícone de saúde
         screen.blit(self.heart_icon, icon_pos_health)
 
-        # Tamanho da fonte proporcional ao tamanho da tela
-        font_size = int(24 * (screen.get_width() / 1600))  # Ajuste proporcional
-        self.font = pygame.font.Font('assets/fonts/cs_regular.ttf', font_size)
+        # Renderiza o texto da saúde com opacidade de 70% e posiciona à direita do ícone de saúde
+        health_font = pygame.font.Font('assets/fonts/cs_regular.ttf', self.font_size // 2)
+        health_text = health_font.render(f'HP: {health}', True, yellow)
+        health_text_surface = pygame.Surface(health_text.get_size(), pygame.SRCALPHA)
+        health_text_surface.set_alpha(178)  # 70% opacidade
+        health_text_surface.blit(health_text, (0, 0))
 
-        # Posições do texto Ammo (agora $) e Money (números sem a palavra Ammo)
-        ammo_text_pos = (screen.get_width() - 150 * (screen.get_width() / 1600), screen.get_height() - 50 * (screen.get_height() / 900))
-        money_text_pos = (screen.get_width() - 150 * (screen.get_width() / 1600), ammo_text_pos[1] - 30 * (screen.get_height() / 900))
+        # Posiciona o texto da saúde à direita do ícone de saúde
+        health_text_pos = (icon_pos_health[0] + self.heart_icon.get_width() + 10,
+                           icon_pos_health[1] + (self.heart_icon.get_height() - health_text_surface.get_height()) // 2)
 
-        # Desenhar texto para munição (agora $) e dinheiro (números sem a palavra Ammo)
-        money_text = self.font.render(f'{ammo}', True, yellow)  # Removi a palavra "Ammo"
-        screen.blit(money_text, money_text_pos)  # Money acima
+        # Desenha a Surface do texto da saúde na tela
+        screen.blit(health_text_surface, health_text_pos)
+
+        # Define a nova fonte para o texto da munição com metade do tamanho original
+        smaller_font = pygame.font.Font('assets/fonts/cs_regular.ttf', self.font_size // 2)
+
+        # Renderiza o texto da munição com o novo formato "xx | xx"
+        ammo_text = smaller_font.render(f'{ammo[0]} | {ammo[1]}', True, yellow)
+
+        # Cria uma nova Surface para o texto da munição com opacidade ajustada
+        ammo_text_surface = pygame.Surface((ammo_text.get_width(), ammo_text.get_height()), pygame.SRCALPHA)
+        ammo_text_surface.set_alpha(178)  # 70% opacidade
+        ammo_text_surface.blit(ammo_text, (0, 0))
+
+        # Define a posição do ícone de munição para a direita do texto
+        icon_pos_ammo = (self.screen_width - self.ammo_icon.get_width() - 20,
+                         self.screen_height - self.ammo_icon.get_height() - 20)
+
+        # Desenha o ícone de munição
+        screen.blit(self.ammo_icon, icon_pos_ammo)
+
+        # Define a posição do texto da munição para a esquerda do ícone
+        ammo_text_pos = (icon_pos_ammo[0] - ammo_text_surface.get_width() - 10,
+                         icon_pos_ammo[1] + (self.ammo_icon.get_height() // 2) - (ammo_text_surface.get_height() // 2))
+
+        # Desenha a Surface do texto da munição na tela
+        screen.blit(ammo_text_surface, ammo_text_pos)

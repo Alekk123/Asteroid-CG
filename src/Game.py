@@ -13,11 +13,11 @@ def game_loop():
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption('CS2D')
 
-    player = Player((width // 2, height // 2), width, height)
+    player = Player((width // 3, height // 3), width, height)
     bullets = []
 
     game_map = GameMap('assets/images/mapa.png', (width, height))
-    hud = HUD()
+    hud = HUD(width, height)
 
     while True:
         for event in pygame.event.get():
@@ -41,7 +41,7 @@ def game_loop():
                         angle = math.atan2(pygame.mouse.get_pos()[1] - player.pos.y,
                                            pygame.mouse.get_pos()[0] - player.pos.x)
                         # Definir o offset aqui - ajuste este valor conforme necessário
-                        offset = 20  # O offset é a distância da posição do jogador até onde a bala é criada
+                        offset = 0  # O offset é a distância da posição do jogador até onde a bala é criada
                         # Correção: passar o ângulo em radianos e o offset para a classe Bullet
                         bullet = Bullet(player.pos, angle, offset)
                         bullets.append(bullet)
@@ -54,7 +54,7 @@ def game_loop():
         game_map.draw(screen)
 
         # Desenha o HUD
-        hud.draw(screen, player.health, 100, player.ammo, player.money)
+        hud.draw(screen, player.health, player.ammo)
 
         # Atualiza e desenha as balas
         for bullet in bullets[:]:
