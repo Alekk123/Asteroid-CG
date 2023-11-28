@@ -1,5 +1,6 @@
 import pygame
 
+
 class HUD:
     def __init__(self):
         # Carregar os ícones para o HUD e redimensioná-los
