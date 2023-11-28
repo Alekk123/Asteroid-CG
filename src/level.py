@@ -8,3 +8,4 @@ class Level:
 
     def execute:
         self.monster.run()
+        print("Hello")
