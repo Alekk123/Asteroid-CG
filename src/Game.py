@@ -1,9 +1,8 @@
 import pygame
-import time
 import math
-from src.player import Player
-from src.bullet import Bullet
-from src.hud import HUD
+from player import Player
+from bullet import Bullet
+from hud import HUD
 from game_map import GameMap
 
 def game_loop():
