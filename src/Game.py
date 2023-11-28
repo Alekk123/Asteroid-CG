@@ -37,10 +37,13 @@ def game_loop():
                     if player.ammo[0] > 0:
                         bullet_sound = pygame.mixer.Sound('music/sounds_gunshot.wav')
                         bullet_sound.play()
-                        angle = math.degrees(
-                            math.atan2(pygame.mouse.get_pos()[1] - player.pos.y,
-                                       pygame.mouse.get_pos()[0] - player.pos.x))
-                        bullet = Bullet(player.pos, angle)
+                        # Correção: o ângulo deve ser passado em radianos para a classe Bullet
+                        angle = math.atan2(pygame.mouse.get_pos()[1] - player.pos.y,
+                                           pygame.mouse.get_pos()[0] - player.pos.x)
+                        # Definir o offset aqui - ajuste este valor conforme necessário
+                        offset = 20  # O offset é a distância da posição do jogador até onde a bala é criada
+                        # Correção: passar o ângulo em radianos e o offset para a classe Bullet
+                        bullet = Bullet(player.pos, angle, offset)
                         bullets.append(bullet)
 
         # Atualiza o jogador
