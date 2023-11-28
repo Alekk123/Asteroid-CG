@@ -10,6 +10,7 @@ class Player:
         self.pos = pygame.math.Vector2(pos)
         self.speed = 5
         self.health = 100
+        # Inicialização de munição atualizada para ter dois valores: munição no carregador e total
         self.ammo = [30, 90]  # Representa balas no carregador e balas totais, respectivamente.
         self.money = 0
         self.width = width
@@ -58,3 +59,29 @@ class Player:
         self.pos.x += dx
         self.pos.y += dy
         self.rect.center = self.pos
+
+    # Método para disparar uma bala
+    def shoot(self):
+        if self.ammo[0] > 0:
+            self.ammo[0] -= 1  # Diminui uma bala do carregador
+            # Adicione aqui a lógica para criar a bala e adicionar à lista de sprites, por exemplo
+            print("Disparo!")  # Placeholder para o som de disparo
+        else:
+            # Aqui você pode querer tocar um som de clique ou similar
+            print("Sem munição no carregador!")  # Placeholder
+
+    # Método para recarregar a arma
+    def reload(self):
+        if self.ammo[1] > 0:
+            bullets_to_reload = 30 - self.ammo[0]
+            if self.ammo[1] >= bullets_to_reload:
+                self.ammo[1] -= bullets_to_reload
+                self.ammo[0] = 30
+            else:
+                self.ammo[0] += self.ammo[1]
+                self.ammo[1] = 0
+            # Adicione aqui a lógica para tocar o som de recarga, por exemplo
+            print("Recarregando...")  # Placeholder
+        else:
+            # Aqui você pode querer informar o jogador que não há munição reserva
+            print("Sem munição reserva!")  # Placeholder

@@ -18,30 +18,19 @@ class HUD:
 
         # Posições das barras
         health_bar_width = 100 * (health / 100)  # Assumindo que a saúde máxima é 100
-        shield_bar_width = 100 * (shield / 100)  # Assumindo que o escudo máximo é 100
 
         # Posições dos ícones
         icon_pos_health = (20, screen.get_height() - 20 - self.heart_icon.get_height())
-        icon_pos_shield = (icon_pos_health[0], icon_pos_health[1] - self.shield_icon.get_height() - 10)
 
         # Posições das barras atrás dos ícones
         health_bar_rect = pygame.Rect(icon_pos_health[0] + self.heart_icon.get_width() + 10,
                                       icon_pos_health[1] + self.heart_icon.get_height() // 2 - 7, health_bar_width, 15)
-
-        shield_bar_rect = pygame.Rect(icon_pos_shield[0] + self.shield_icon.get_width() + 10,
-                                      icon_pos_shield[1] + self.shield_icon.get_height() // 2 - 7, shield_bar_width, 15)
 
         # Desenhar barra de saúde
         pygame.draw.rect(screen, red, health_bar_rect)
 
         # Desenhar ícone de vida
         screen.blit(self.heart_icon, icon_pos_health)
-
-        # Desenhar barra de escudo
-        pygame.draw.rect(screen, yellow, shield_bar_rect)
-
-        # Desenhar ícone de escudo na frente da barra de saúde
-        screen.blit(self.shield_icon, icon_pos_shield)
 
         # Tamanho da fonte proporcional ao tamanho da tela
         font_size = int(24 * (screen.get_width() / 1600))  # Ajuste proporcional
@@ -52,7 +41,5 @@ class HUD:
         money_text_pos = (screen.get_width() - 150 * (screen.get_width() / 1600), ammo_text_pos[1] - 30 * (screen.get_height() / 900))
 
         # Desenhar texto para munição (agora $) e dinheiro (números sem a palavra Ammo)
-        ammo_text = self.font.render(f'${money}', True, yellow)
         money_text = self.font.render(f'{ammo}', True, yellow)  # Removi a palavra "Ammo"
         screen.blit(money_text, money_text_pos)  # Money acima
-        screen.blit(ammo_text, ammo_text_pos)  # Ammo abaixo
