@@ -7,19 +7,19 @@ class HUD:
 
         # Carrega e escala o ícone de saúde de acordo com o fator de escala
         self.heart_icon = pygame.transform.scale(
-            pygame.image.load('assets/images/health_icon.png'),
+            pygame.image.load('src/assets/images/health_icon.png'),
             (int(32 * icon_scale), int(32 * icon_scale))
         )
 
         # Carrega e escala o ícone de munição de acordo com o fator de escala
         self.ammo_icon = pygame.transform.scale(
-            pygame.image.load('assets/images/ammo.png'),
+            pygame.image.load('src/assets/images/ammo.png'),
             (int(36 * icon_scale), int(36 * icon_scale))
         )
 
         # Aumenta o tamanho da fonte proporcionalmente ao aumento dos ícones
         self.font_size = int(36 * icon_scale)  # Tamanho da fonte baseado no fator de escala
-        self.font = pygame.font.Font('assets/fonts/cs_regular.ttf', self.font_size)
+        self.font = pygame.font.Font('src/assets/fonts/cs_regular.ttf', self.font_size)
 
         # Guarda as dimensões da tela para uso no método draw
         self.screen_width = screen_width
@@ -36,7 +36,7 @@ class HUD:
         screen.blit(self.heart_icon, icon_pos_health)
 
         # Renderiza o texto da saúde com opacidade de 70% e posiciona à direita do ícone de saúde
-        health_font = pygame.font.Font('assets/fonts/cs_regular.ttf', self.font_size // 2)
+        health_font = pygame.font.Font('src/assets/fonts/cs_regular.ttf', self.font_size // 2)
         health_text = health_font.render(f'HP: {health}', True, yellow)
         health_text_surface = pygame.Surface(health_text.get_size(), pygame.SRCALPHA)
         health_text_surface.set_alpha(178)  # 70% opacidade
@@ -50,7 +50,7 @@ class HUD:
         screen.blit(health_text_surface, health_text_pos)
 
         # Define a nova fonte para o texto da munição com metade do tamanho original
-        smaller_font = pygame.font.Font('assets/fonts/cs_regular.ttf', self.font_size // 2)
+        smaller_font = pygame.font.Font('src/assets/fonts/cs_regular.ttf', self.font_size // 2)
 
         # Renderiza o texto da munição com o novo formato "xx | xx"
         ammo_text = smaller_font.render(f'{ammo[0]} | {ammo[1]}', True, yellow)

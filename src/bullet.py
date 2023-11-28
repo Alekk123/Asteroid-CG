@@ -2,7 +2,7 @@ import pygame
 import math
 
 class Bullet:
-    bullet_image = pygame.image.load('assets/images/bullet_sprite_2.png')
+    bullet_image = pygame.image.load('src/assets/images/bullet_sprite_2.png')
 
     def __init__(self, pos, angle, offset):
         self.original_image = Bullet.bullet_image

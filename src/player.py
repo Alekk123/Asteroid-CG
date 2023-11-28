@@ -3,7 +3,7 @@ import math
 
 class Player:
     def __init__(self, pos, width, height):
-        self.original_image = pygame.image.load('assets/images/player_sprite.png')
+        self.original_image = pygame.image.load('src/assets/images/player_sprite.png')
         self.original_image = pygame.transform.scale(self.original_image, (129, 110))
         self.image = self.original_image.copy()
         self.rect = self.image.get_rect(center=pos)

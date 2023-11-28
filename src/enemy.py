@@ -1,31 +1,24 @@
 import math
 import pygame
+import random
 from pygame.locals import *
 
 class Enemy:
-    def __init__(self, qtd_monster, level):
-        self.speed = 5
-        self.health = 100
-        self.qtd_monster = qtd_monster
-        self.level = level
+    def __init__(self, screen_width, screen_height):
+        self.image = pygame.Surface((30, 30))
+        self.image.fill((255, 0, 0))
+        self.rect = self.image.get_rect()
 
-    def run(self):
+        self.rect.x = random.randint(screen_width, screen_width + 100)
+        self.rect.y = random.randint(0, screen_height - 30)
 
-    def move_towards_player(self, player):
-        # Find direction vector (dx, dy) between enemy and player.
-        dx, dy = player.rect.x - self.rect.x, player.rect.y - self.rect.y
-        dist = math.hypot(dx, dy)
-        dx, dy = dx / dist, dy / dist  # Normalize.
-        # Move along this normalized vector towards the player at current speed.
-        self.rect.x += dx * self.speed
-        self.rect.y += dy * self.speed
+        self.speed = random.randint(10, 12)
 
-    # Same thing using only pygame utilities
-    def move_towards_player2(self, player):
-        # Find direction vector (dx, dy) between enemy and player.
-        dirvect = pygame.math.Vector2(player.rect.x - self.rect.x,
-                                      player.rect.y - self.rect.y)
-        dirvect.normalize()
-        # Move along this normalized vector towards the player at current speed.
-        dirvect.scale_to_length(self.speed)
-        self.rect.move_ip(dirvect)
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+
+    def update(self):
+        self.rect.x -= self.speed
+        if self.rect.right < 0:
+            self.rect.x = random.randint(self.screen_width, self.screen_width + 100)
+            self.rect.y = random.randint(0, self.screen_height - 30)

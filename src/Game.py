@@ -1,9 +1,11 @@
 import pygame
 import math
+import random
 from player import Player
 from bullet import Bullet
 from hud import HUD
 from game_map import GameMap
+from enemy import Enemy
 
 def game_loop():
     clock = pygame.time.Clock()
@@ -16,8 +18,10 @@ def game_loop():
     player = Player((width // 3, height // 3), width, height)
     bullets = []
 
-    game_map = GameMap('assets/images/mapa.png', (width, height))
+    game_map = GameMap('src/assets/images/mapa.png', (width, height))
     hud = HUD(width, height)
+
+    enemies = [Enemy(width, height) for _ in range(5)]
 
     while True:
         for event in pygame.event.get():
@@ -35,7 +39,7 @@ def game_loop():
                     player.shoot()
                     # Se a munição for maior que zero, dispara
                     if player.ammo[0] > 0:
-                        bullet_sound = pygame.mixer.Sound('music/sounds_gunshot.wav')
+                        bullet_sound = pygame.mixer.Sound('src/music/sounds_gunshot.wav')
                         bullet_sound.play()
                         # Correção: o ângulo deve ser passado em radianos para a classe Bullet
                         angle = math.atan2(pygame.mouse.get_pos()[1] - player.pos.y,
@@ -55,6 +59,11 @@ def game_loop():
 
         # Desenha o HUD
         hud.draw(screen, player.health, player.ammo)
+
+        for enemy in enemies:
+            enemy.update()
+            screen.blit(enemy.image, enemy.rect)
+
 
         # Atualiza e desenha as balas
         for bullet in bullets[:]:

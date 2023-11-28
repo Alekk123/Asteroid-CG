@@ -58,7 +58,7 @@ def main_menu():
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption('Menu do CS2D')
 
-    bg = pygame.image.load('assets/images/fundo_menu.jpg')
+    bg = pygame.image.load('src/assets/images/fundo_menu.jpg')
     bg = pygame.transform.scale(bg, (width, height))
 
     clock = pygame.time.Clock()

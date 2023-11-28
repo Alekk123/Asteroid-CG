@@ -6,6 +6,5 @@ class Level:
         self.qtd_monster = 0
         self.enemy = Enemy(self.qtd_monster, self.level)
 
-    def execute:
+    def execute(self):
         self.monster.run()
-        print("Hello")
