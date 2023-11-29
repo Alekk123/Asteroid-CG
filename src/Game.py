@@ -6,6 +6,7 @@ from bullet import Bullet
 from hud import HUD
 from game_map import GameMap
 from enemy import Enemy
+from hit import Hit
 
 def game_loop():
     clock = pygame.time.Clock()
@@ -18,10 +19,15 @@ def game_loop():
     player = Player((width // 3, height // 3), width, height)
     bullets = []
 
-    game_map = GameMap('src/assets/images/mapa.png', (width, height))
+    game_map = GameMap('src/assets/images/mapa_rua.png', (width, height))
     hud = HUD(width, height)
 
-    enemies = [Enemy(width, height) for _ in range(5)]
+    monster_qtd = 10
+    enemies = [Enemy(width, height) for _ in range(monster_qtd)]
+
+    enemy = Enemy(width, height)
+
+    enemy_killed_count = 0
 
     while True:
         for event in pygame.event.get():
@@ -60,6 +66,21 @@ def game_loop():
         # Desenha o HUD
         hud.draw(screen, player.health, player.ammo)
 
+        if enemy_killed_count == 10:
+            monster_qtd += 10
+            enemies.extend([Enemy(width, height) for _ in range(10)])
+            enemy_killed_count = 0
+
+
+        for bullet in bullets[:]:
+            for enemy in enemies[:]:
+                if bullet.rect.colliderect(enemy.rect):
+                    print("Colisão!")
+                    enemies.remove(enemy)
+                    bullets.remove(bullet)
+                    enemy_killed_count += 1
+
+
         for enemy in enemies:
             enemy.update()
             screen.blit(enemy.image, enemy.rect)
@@ -74,6 +95,11 @@ def game_loop():
 
         # Desenha o jogador
         screen.blit(player.image, player.rect.topleft)
+
+        for enemy in enemies:
+            enemy.update()
+            screen.blit(enemy.image, enemy.rect)
+            pygame.draw.rect(screen, (255, 0, 0), enemy.rect, 10)
 
         pygame.display.flip()
         clock.tick(60)
