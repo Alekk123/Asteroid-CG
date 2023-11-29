@@ -17,7 +17,7 @@ def game_loop():
 
     width, height = 1600, 900
     screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption('CS2D')
+    pygame.display.set_caption('Undead Zombies')
 
     player = Player((width // 3, height // 3), width, height)
     bullets = []
@@ -100,7 +100,7 @@ def game_loop():
                 #dar play em uma musica
                 hurt_song = pygame.mixer.Sound('src/music/sounds_hurt.mp3')
                 hurt_song.play()
-                player.health -= 1
+                player.health -= 10
                 if player.health == 0:
                     die_song.play()
                     return

@@ -41,12 +41,6 @@ def draw_text_with_outline(screen, text, font, x, y, text_color, outline_color):
     text_rect.center = (x, y)
     screen.blit(text_surface, text_rect)
 
-
-def options_menu():
-    # Placeholder for the options menu
-    print("Menu de opção nao tem nada implementado ainda.")
-
-
 def main_menu():
     pygame.init()
     pygame.font.init()
@@ -56,9 +50,9 @@ def main_menu():
 
     width, height = 1600, 900
     screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption('Menu do CS2D')
+    pygame.display.set_caption('Menu do Undead Asteroids')
 
-    bg = pygame.image.load('src/assets/images/fundo_menu.jpg')
+    bg = pygame.image.load('src/assets/images/menu_fundo.jpg')
     bg = pygame.transform.scale(bg, (width, height))
 
     clock = pygame.time.Clock()
@@ -74,11 +68,11 @@ def main_menu():
 
         # Draw CS2D Logo
         large_text = pygame.font.Font('freesansbold.ttf', 115)
-        draw_text_with_outline(screen, "CS2D", large_text, 1100, 100, (128, 0, 0), (0, 0, 0))
+        draw_text_with_outline(screen, "Undead Asteroids", large_text, 800, 500, (128, 0, 0), (0, 0, 0))
 
         # Draw buttons
-        draw_button(screen, "GO!", 1050, 200, 100, 50, (0, 255, 0), (0, 200, 0), game_loop)
-        draw_button(screen, "Quit", 1050, 300, 100, 50, (255, 0, 0), (200, 0, 0), quit_game)
+        draw_button(screen, "GO!", 750, 600, 100, 50, (0, 150, 0), (0, 200, 0), game_loop)
+        draw_button(screen, "Quit", 750, 700, 100, 50, (150, 0, 0), (200, 0, 0), quit_game)
 
         pygame.display.update()
         clock.tick(15)
