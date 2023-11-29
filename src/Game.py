@@ -12,6 +12,9 @@ def game_loop():
     clock = pygame.time.Clock()
     pygame.init()
 
+    sound_timer = pygame.time.get_ticks()  # Obtém o tempo atual em milissegundos
+    sound_interval = 15000  # Intervalo de 15 segundos em milissegundos
+
     width, height = 1600, 900
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption('CS2D')
@@ -22,14 +25,22 @@ def game_loop():
     game_map = GameMap('src/assets/images/mapa_rua.png', (width, height))
     hud = HUD(width, height)
 
-    monster_qtd = 10
+    monster_qtd = 5
     enemies = [Enemy(width, height) for _ in range(monster_qtd)]
 
     enemy = Enemy(width, height)
 
     enemy_killed_count = 0
+    ENEMY_KILLED_TO_INCREASE = 5
+
+    #SOUNDS EFFECTS
+    hurt_song = pygame.mixer.Sound('src/music/sounds_hurt.mp3')
+    die_song = pygame.mixer.Sound('src/music/sounds_player_die.mp3')
+    zombie_casual_song = pygame.mixer.Sound('src/music/zombie_casual_sound.mp3')
 
     while True:
+        current_time = pygame.time.get_ticks()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
@@ -66,25 +77,39 @@ def game_loop():
         # Desenha o HUD
         hud.draw(screen, player.health, player.ammo)
 
-        if enemy_killed_count == 10:
-            monster_qtd += 10
+        if enemy_killed_count == ENEMY_KILLED_TO_INCREASE:
+            zombie_casual_song.play()
+            monster_qtd += 1
             enemies.extend([Enemy(width, height) for _ in range(10)])
+            ENEMY_KILLED_TO_INCREASE += 5
             enemy_killed_count = 0
+            player.speed += 1
 
-
+        # COLISÃO DO JOGADOR COM O INIMIGO
         for bullet in bullets[:]:
             for enemy in enemies[:]:
                 if bullet.rect.colliderect(enemy.rect):
-                    print("Colisão!")
                     enemies.remove(enemy)
                     bullets.remove(bullet)
                     enemy_killed_count += 1
+
+        # COLISÃO DO INIMIGO COM O JOGADOR
+        for enemy in enemies[:]:
+            if player.rect.colliderect(enemy.rect) and enemy.hitted == False:
+                enemy.hitted = True
+                #dar play em uma musica
+                hurt_song = pygame.mixer.Sound('src/music/sounds_hurt.mp3')
+                hurt_song.play()
+                player.health -= 1
+                if player.health == 0:
+                    die_song.play()
+                    return
+                hurt_song.play()
 
 
         for enemy in enemies:
             enemy.update()
             screen.blit(enemy.image, enemy.rect)
-
 
         # Atualiza e desenha as balas
         for bullet in bullets[:]:
@@ -93,13 +118,14 @@ def game_loop():
             else:
                 screen.blit(bullet.image, bullet.rect.topleft)
 
+        if current_time - sound_timer >= sound_interval:
+            # Toca o som
+            zombie_casual_song.play()
+            # Reinicia o temporizador
+            sound_timer = current_time
+
         # Desenha o jogador
         screen.blit(player.image, player.rect.topleft)
-
-        for enemy in enemies:
-            enemy.update()
-            screen.blit(enemy.image, enemy.rect)
-            pygame.draw.rect(screen, (255, 0, 0), enemy.rect, 10)
 
         pygame.display.flip()
         clock.tick(60)

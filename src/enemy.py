@@ -23,6 +23,8 @@ class Enemy:
         self.screen_width = screen_width
         self.screen_height = screen_height
 
+        self.hitted = False
+
     def update(self):
         self.image = pygame.transform.rotate(self.original_image, 180)
         self.image = pygame.transform.scale(self.image, (159, 140))
@@ -32,6 +34,7 @@ class Enemy:
         if self.rect.right < 0:
             self.rect.x = random.randint(self.screen_width, self.screen_width + 100)
             self.rect.y = random.randint(0, self.screen_height - 30)
+            self.hitted = False
 
     def update_sprite(self):
         self.current_sprite += 0.5

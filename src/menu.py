@@ -78,8 +78,7 @@ def main_menu():
 
         # Draw buttons
         draw_button(screen, "GO!", 1050, 200, 100, 50, (0, 255, 0), (0, 200, 0), game_loop)
-        draw_button(screen, "Options", 1050, 300, 100, 50, (255, 255, 0), (200, 200, 0), options_menu)
-        draw_button(screen, "Quit", 1050, 400, 100, 50, (255, 0, 0), (200, 0, 0), quit_game)
+        draw_button(screen, "Quit", 1050, 300, 100, 50, (255, 0, 0), (200, 0, 0), quit_game)
 
         pygame.display.update()
         clock.tick(15)
